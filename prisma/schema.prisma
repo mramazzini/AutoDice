@@ -11,6 +11,15 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+enum AbilityScore {
+  STR
+  CON
+  DEX
+  INT
+  WIS
+  CHA
+}
+
 model User {
   id           Int           @id @default(autoincrement())
   email        String        @unique
@@ -26,6 +35,15 @@ model Character {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Langauge {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Race      Race?    @relation(fields: [raceId], references: [id])
+  raceId    Int?
 }
 
 model Monster {
@@ -47,17 +65,44 @@ model Spell {
 }
 
 model Class {
-  id            Int          @id @default(autoincrement())
-  name          String
+  // Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard etc
+  id                Int            @id @default(autoincrement())
+  name              String
+  hitDie            Int
+  savingThrows      AbilityScore[]
+  skillChoiceCount  Int
+  skillChoices      Skill[]
+  startingEquipment Equipment[]
+  ContentPack       ContentPack?   @relation(fields: [contentPackId], references: [id])
+  contentPackId     Int?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  SubClass          SubClass[]
+  Features          Features[]
+}
+
+model SubClass {
+  // Secondary class attached to each class with further abilities
+  id      Int    @id @default(autoincrement())
+  name    String
+  class   Class? @relation(fields: [classId], references: [id])
+  classId Int?
+
   ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
   contentPackId Int?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  Features      Features[]
 }
 
-model SubClass {
+model Features {
+  // Abilities that classes gain as they reach certain levels
   id            Int          @id @default(autoincrement())
   name          String
+  classId       Int
+  class         Class?       @relation(fields: [classId], references: [id])
+  SubClass      SubClass?    @relation(fields: [subClassId], references: [id])
+  subClassId    Int?
   ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
   contentPackId Int?
   createdAt     DateTime     @default(now())
@@ -65,6 +110,7 @@ model SubClass {
 }
 
 model Background {
+  // A characters background which gives them extra proficiencies and equipment
   id            Int          @id @default(autoincrement())
   name          String
   ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
@@ -74,6 +120,7 @@ model Background {
 }
 
 model Feat {
+  // A feat that a character can take to give them extra abilities
   id            Int          @id @default(autoincrement())
   name          String
   createdAt     DateTime     @default(now())
@@ -83,21 +130,77 @@ model Feat {
 }
 
 model Equipment {
+  // Weapons, Armor, Tools, Items
   id            Int          @id @default(autoincrement())
   name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  Class         Class?       @relation(fields: [classId], references: [id])
+  classId       Int?
+}
+
+model Race {
+  // Human, Elf, Dwarf, Halfling, Dragonborn, Gnome, Half-Elf, Half-Orc, Tiefling etc
+  // Describes attributes that each race has like size, speed, or language proficiencies. Traits are custom to an individual race. 
+  id            Int          @id @default(autoincrement())
+  name          String
+  alignment     String
+  size          String
+  speed         Int
+  languages     Langauge[]
+  darkVision    Int
+  subRaces      SubRace[]
+  traits        Traits[]
   ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
   contentPackId Int?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 }
 
-model Race {
-  id            Int          @id @default(autoincrement())
-  name          String
-  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
-  contentPackId Int?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+model Traits {
+  // Specific Named abilities that provide a preset buff/array of buffs
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  buffs       Buff[]
+  Race        Race?    @relation(fields: [raceId], references: [id])
+  raceId      Int?
+  SubRace     SubRace? @relation(fields: [subRaceId], references: [id])
+  subRaceId   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Buff {
+  // Simple Buffs that can be applied to a character
+  // This includes giving a proficiency in a skill, a saving throw, or a tool. Bonus to a stat, or a bonus to AC, or advantage/bonus on specific rolls.
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Traits    Traits?  @relation(fields: [traitsId], references: [id])
+  traitsId  Int?
+}
+
+model Skill {
+  // Skills that a character can have 
+  // Acrobatics, Animal Handling, Arcana, Athletics, Deception, History, Insight, Intimidation, Investigation, Medicine, Nature, Perception, Performance, Persuasion, Religion, Sleight of Hand, Stealth, Survival
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Class     Class?   @relation(fields: [classId], references: [id])
+  classId   Int?
+}
+
+model SubRace {
+  id     Int      @id @default(autoincrement())
+  name   String
+  traits Traits[]
+  Race   Race?    @relation(fields: [raceId], references: [id])
+  raceId Int?
 }
 
 model Maps {
@@ -125,4 +228,5 @@ model ContentPack {
   userId      Int?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  Features    Features[]
 }
