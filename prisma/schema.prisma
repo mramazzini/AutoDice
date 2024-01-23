@@ -9,3 +9,119 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  name         String?
+  password     String
+  contentPacks ContentPack[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Character {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Monster {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Spell {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Class {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model SubClass {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Background {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Feat {
+  id            Int          @id @default(autoincrement())
+  name          String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+}
+
+model Equipment {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Race {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Maps {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model ContentPack {
+  id          Int          @id @default(autoincrement())
+  name        String
+  monsters    Monster[]
+  spells      Spell[]
+  classes     Class[]
+  subClasses  SubClass[]
+  backgrounds Background[]
+  races       Race[]
+  feat        Feat[]
+  equipment   Equipment[]
+  maps        Maps[]
+  user        User?        @relation(fields: [userId], references: [id])
+  userId      Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
