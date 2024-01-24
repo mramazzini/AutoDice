@@ -31,10 +31,29 @@ model User {
 }
 
 model Character {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int        @id @default(autoincrement())
+  name       String
+  class      Class      @relation(fields: [classId], references: [id])
+  subClass   SubClass?  @relation(fields: [subClassId], references: [id])
+  race       Race?      @relation(fields: [raceId], references: [id])
+  subRace    SubRace?   @relation(fields: [subRaceId], references: [id])
+  background Background @relation(fields: [backgroundId], references: [id])
+  equipment  Equipment  @relation(fields: [equipmentId], references: [id])
+  str        Int
+  dex        Int
+  con        Int
+  int        Int
+  wis        Int
+  cha        Int
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  classId      Int
+  subClassId   Int?
+  raceId       Int?
+  subRaceId    Int?
+  backgroundId Int
+  equipmentId  Int
 }
 
 model Langauge {
@@ -79,6 +98,7 @@ model Class {
   updatedAt         DateTime       @updatedAt
   SubClass          SubClass[]
   Features          Features[]
+  Character         Character[]
 }
 
 model SubClass {
@@ -93,6 +113,7 @@ model SubClass {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   Features      Features[]
+  Character     Character[]
 }
 
 model Features {
@@ -117,6 +138,7 @@ model Background {
   contentPackId Int?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  Character     Character[]
 }
 
 model Feat {
@@ -139,6 +161,7 @@ model Equipment {
   updatedAt     DateTime     @updatedAt
   Class         Class?       @relation(fields: [classId], references: [id])
   classId       Int?
+  Character     Character[]
 }
 
 model Race {
@@ -157,6 +180,7 @@ model Race {
   contentPackId Int?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  Character     Character[]
 }
 
 model Traits {
@@ -196,11 +220,12 @@ model Skill {
 }
 
 model SubRace {
-  id     Int      @id @default(autoincrement())
-  name   String
-  traits Traits[]
-  Race   Race?    @relation(fields: [raceId], references: [id])
-  raceId Int?
+  id        Int         @id @default(autoincrement())
+  name      String
+  traits    Traits[]
+  Race      Race?       @relation(fields: [raceId], references: [id])
+  raceId    Int?
+  Character Character[]
 }
 
 model Maps {
