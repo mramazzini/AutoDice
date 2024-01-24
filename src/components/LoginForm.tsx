@@ -1,4 +1,5 @@
 "use client";
+import login from "@/app/actions/login";
 import { useState } from "react";
 export default function LoginForm() {
   const [formState, setFormState] = useState({
@@ -18,17 +19,10 @@ export default function LoginForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formState),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      console.log(data);
-    } else {
-      const data = await res.json();
-      setError(data.message);
+    try {
+      const res = await login(formState);
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
