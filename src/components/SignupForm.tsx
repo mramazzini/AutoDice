@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { PrismaClient } from "@prisma/client";
 export default function SignupForm() {
   const [formState, setFormState] = useState({
     username: "", // or email

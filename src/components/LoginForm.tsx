@@ -2,7 +2,7 @@
 import { useState } from "react";
 export default function LoginForm() {
   const [formState, setFormState] = useState({
-    username: "", // or email
+    email: "",
     password: "",
   });
 
@@ -15,37 +15,31 @@ export default function LoginForm() {
     });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    fetch("/api/login", {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formState),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong");
-        }
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+    });
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data);
+    } else {
+      const data = await res.json();
+      setError(data.message);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="email">Username</label>
         <input
-          id="username"
-          type="text"
-          value={formState.username}
+          id="email"
+          type="email"
+          value={formState.email}
           onChange={handleChange}
         />
       </div>
