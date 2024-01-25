@@ -10,7 +10,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="bg-blue-950 w-full min-h-screen text-white font-mono ">
+        {children}
+      </body>
     </html>
   );
 }

@@ -2,8 +2,8 @@ import SignupForm from "../../components/SignupForm";
 
 export default function SignupPage() {
   return (
-    <div>
-      <h1>Signup</h1>
+    <div className="w-full justify-center items-center h-screen flex flex-col">
+      <h1 className="text-4xl font-bold ">Signup</h1>
       <SignupForm />
     </div>
   );

@@ -1,4 +1,5 @@
 "use server";
+import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
 export default async function login(formdata: {
   email: string;
@@ -17,11 +18,11 @@ export default async function login(formdata: {
     throw new Error("User not found");
   }
 
-  const passwordMatch = user.password === password;
+  const passwordMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordMatch) {
     throw new Error("Password incorrect");
   }
-
+  console.log(user);
   return user;
 }
