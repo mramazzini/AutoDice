@@ -1,0 +1,332 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum WeaponCategory {
+  Simple
+  Martial
+  Melee
+  Ranged
+}
+
+enum ArmorCategory {
+  Light
+  Medium
+  Heavy
+  Shield
+}
+
+enum Size {
+  Tiny
+  Small
+  Medium
+  Large
+  Huge
+  Gargantuan
+}
+
+enum Alignment {
+  Lawful
+  Chaotic
+  Good
+  Evil
+  Unaligned
+  LawfulGood
+  LawfulNeutral
+  LawfulEvil
+  NeutralGood
+  TrueNeutral
+  NeutralEvil
+  ChaoticGood
+  ChaoticNeutral
+  ChaoticEvil
+}
+
+enum AbilityScore {
+  STR
+  CON
+  DEX
+  INT
+  WIS
+  CHA
+}
+
+enum Skill {
+  Acrobatics
+  AnimalHandling
+  Arcana
+  Athletics
+  Deception
+  History
+  Insight
+  Intimidation
+  Investigation
+  Medicine
+  Nature
+  Perception
+  Performance
+  Persuasion
+  Religion
+  SleightOfHand
+  Stealth
+  Survival
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  name         String?
+  password     String
+  contentPacks ContentPack[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Character {
+  id           Int        @id @default(autoincrement())
+  name         String
+  class        Class      @relation(fields: [classId], references: [id])
+  subClass     SubClass?  @relation(fields: [subClassId], references: [id])
+  race         Race?      @relation(fields: [raceId], references: [id])
+  subRace      SubRace?   @relation(fields: [subRaceId], references: [id])
+  background   Background @relation(fields: [backgroundId], references: [id])
+  equipment    Equipment  @relation(fields: [equipmentId], references: [id])
+  str          Int
+  dex          Int
+  con          Int
+  int          Int
+  wis          Int
+  cha          Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  classId      Int
+  subClassId   Int?
+  raceId       Int?
+  subRaceId    Int?
+  backgroundId Int
+  equipmentId  Int
+}
+
+model Langauge {
+  id            Int          @id @default(autoincrement())
+  name          String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  contentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  Background    Background?  @relation(fields: [backgroundId], references: [id])
+  backgroundId  Int?
+  Race          Race?        @relation(fields: [raceId], references: [id])
+  raceId        Int?
+}
+
+model Monster {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Spell {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Class {
+  // Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard etc
+  id                  Int              @id @default(autoincrement())
+  name                String
+  description         String
+  hitDie              Int
+  primaryAbility      AbilityScore
+  savingThrows        AbilityScore[]
+  skillChoiceCount    Int
+  skillChoices        Skill[]
+  armorProficiencies  ArmorCategory[]
+  weaponProficiencies WeaponCategory[]
+  startingEquipment   Equipment[]
+  ContentPack         ContentPack?     @relation(fields: [contentPackId], references: [id])
+  contentPackId       Int?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  SubClass            SubClass[]
+  Features            Feature[]
+  Character           Character[]
+}
+
+model SubClass {
+  // Secondary class attached to each class with further abilities
+  id      Int    @id @default(autoincrement())
+  name    String
+  class   Class? @relation(fields: [classId], references: [id])
+  classId Int?
+
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  Features      Feature[]
+  Character     Character[]
+}
+
+model Feature {
+  // Abilities that classes gain as they reach certain levels
+  id            Int          @id @default(autoincrement())
+  name          String
+  classId       Int
+  class         Class?       @relation(fields: [classId], references: [id])
+  SubClass      SubClass?    @relation(fields: [subClassId], references: [id])
+  subClassId    Int?
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Background {
+  // A characters background which gives them extra proficiencies and equipment
+  id                 Int          @id @default(autoincrement())
+  name               String
+  description        String
+  skillProficiencies Skill[]
+  equipment          Equipment[]
+  languages          Langauge[]
+  languageChoice     Int
+  ContentPack        ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId      Int?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  Character          Character[]
+}
+
+model Feat {
+  // A feat that a character can take to give them extra abilities
+  id            Int          @id @default(autoincrement())
+  name          String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+}
+
+model Equipment {
+  // Weapons, Armor, Tools, Items
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  Class         Class?       @relation(fields: [classId], references: [id])
+  classId       Int?
+  Character     Character[]
+  Background    Background?  @relation(fields: [backgroundId], references: [id])
+  backgroundId  Int?
+}
+
+model Race {
+  // Human, Elf, Dwarf, Halfling, Dragonborn, Gnome, Half-Elf, Half-Orc, Tiefling etc
+  // Describes attributes that each race has like size, speed, or language proficiencies. Traits are custom to an individual race. 
+  id            Int          @id @default(autoincrement())
+  name          String
+  description   String
+  alignment     Alignment
+  size          Size
+  speed         Int
+  languages     Langauge[]
+  darkVision    Int
+  subRaces      SubRace[]
+  traits        Traits[]
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  Character     Character[]
+}
+
+model Traits {
+  // Specific Named abilities that provide a preset buff/array of buffs
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  buffs       Buff[]
+
+  Race          Race?        @relation(fields: [raceId], references: [id])
+  raceId        Int?
+  SubRace       SubRace?     @relation(fields: [subRaceId], references: [id])
+  subRaceId     Int?
+  contentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Buff {
+  // Simple Buffs that can be applied to a character
+  // This includes giving a proficiency in a skill, a saving throw, or a tool. Bonus to a stat, or a bonus to AC, or advantage/bonus on specific rolls.
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Traits    Traits?  @relation(fields: [traitsId], references: [id])
+  traitsId  Int?
+}
+
+model SubRace {
+  id            Int          @id @default(autoincrement())
+  name          String
+  traits        Traits[]
+  Race          Race?        @relation(fields: [raceId], references: [id])
+  raceId        Int?
+  contentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  Character     Character[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Maps {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ContentPack   ContentPack? @relation(fields: [contentPackId], references: [id])
+  contentPackId Int?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model ContentPack {
+  id          Int          @id @default(autoincrement())
+  name        String
+  monsters    Monster[]
+  spells      Spell[]
+  classes     Class[]
+  subClasses  SubClass[]
+  backgrounds Background[]
+  races       Race[]
+  feat        Feat[]
+  equipment   Equipment[]
+  maps        Maps[]
+  user        User?        @relation(fields: [userId], references: [id])
+  userId      Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  Features    Feature[]
+  Langauge    Langauge[]
+  Traits      Traits[]
+  SubRace     SubRace[]
+}
