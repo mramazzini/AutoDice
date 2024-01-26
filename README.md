@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Auto Dice
 
-## Getting Started
+## Table of Contents
 
-First, run the development server:
+- Game Manager (DM)
+- Game Manager (Player)
+- Charactor Creator
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Game Manager (DM)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A customized system for the Dungeon Master to provide the best experience for the players.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Included:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Player Manager
+- Enemy Manager
+- Encounter Generator
+- NPC Generator
+- Merchant Generator
+- Loot Generator
+- Monster Reference
+- Map Selector
 
-## Learn More
+### Player Manager
 
-To learn more about Next.js, take a look at the following resources:
+- Allows a view into the players Character sheet as well as see all available resources at the players disposal.
+- Can apply status conditions or message individually
+- Can write hidden notes on each player
+- Can give items to Players.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Enemy Manager
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Allows the DM to view all available resources at the enemy character's disposal.
 
-## Deploy on Vercel
+### Encounter Generator
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Allows the DM to choose a location, theme, and CR to generate an encounter for a specific location.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### NPC Generator
+
+- Generates a description and name of an NPC, as well as a motive, stat block, and items.
+
+### Merchant Generator
+
+- Generates a Merchant, with a whole set of themed items in its inventory as well as its prices. These prices can be adjusted, but provides a baseline for the DM to work with.
+
+### Loot Generator
+
+- Generates a given number of items, at a selected rarity. Can be filtered by weapon, item, misc, etc.
+
+### Monster Reference
+
+- Dozens of Premade monsters ready out the box for your favorite table top game.
+
+### Map Selector
+
+- Select from our custom made maps, each with a specific combat encounter in mind.
+
+## Game Manager (Player)
+
+- Allows access to the Player Dashboard, as simple and efficient tool to see all available resources at the players disposal.
+
+- Can heal or damage
