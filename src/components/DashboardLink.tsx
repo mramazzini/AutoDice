@@ -6,16 +6,18 @@ export default function DashboardLink({
   src,
   alt,
   action,
+  link,
 }: {
   title: string;
   description: string;
   src: StaticImageData;
   alt: string;
   action: string;
+  link: string;
 }) {
   return (
     <a
-      href="/packs"
+      href={link}
       className=" group flex flex-col bg-white text-black rounded-xl p-5 transition-all duration-300 ease-in-out hover:shadow-xl    
           "
     >

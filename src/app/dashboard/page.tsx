@@ -12,6 +12,7 @@ export default function Dashboard() {
           src={notfound}
           alt="Content Packs"
           action="Take me there!"
+          link={"/content-packs"}
         />
         <DashboardLink
           title="Character Creator"
@@ -19,6 +20,7 @@ export default function Dashboard() {
           src={notfound}
           alt="Character Creator"
           action="Lets get started!"
+          link={"/character-creator"}
         />
         <DashboardLink
           title="DM Tools"
@@ -26,6 +28,7 @@ export default function Dashboard() {
           src={notfound}
           alt="Not Found"
           action="Create Now!"
+          link="/dm-tools"
         />
         <DashboardLink
           title="AutoDice Engine"
@@ -33,6 +36,7 @@ export default function Dashboard() {
           src={notfound}
           alt="Not Found"
           action="Download Now!"
+          link="/auto-dice"
         />
       </div>
     </div>
