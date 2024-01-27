@@ -102,7 +102,7 @@ export default function ContentPacks() {
                 </div>
                 <Link
                   href={`/content-packs:${0}`}
-                  className="bg-blue-500 p-3 rounded-lg my-3 ml-auto"
+                  className="bg-blue-500 p-3  rounded-lg my-3 ml-auto"
                 >
                   View
                 </Link>

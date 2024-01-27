@@ -1,5 +1,5 @@
 "use client";
-import signup from "@/app/actions/signup";
+import signup from "@/actions/signup";
 
 import { useState } from "react";
 export default function SignupForm() {
@@ -18,10 +18,23 @@ export default function SignupForm() {
     });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    signup(formState);
+    try {
+      const token = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      }).then((res) => res.json());
+
+      document.location.href = `/dashboard`;
+    } catch (err: any) {
+      setError(err.message);
+      console.error(err);
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-import login from "@/app/actions/login";
+import login from "@/actions/login";
 import { useState } from "react";
 export default function LoginForm() {
   const [formState, setFormState] = useState({
@@ -21,6 +21,7 @@ export default function LoginForm() {
     setError("");
     try {
       const res = await login(formState);
+      console.log(res);
     } catch (err: any) {
       setError(err.message);
     }

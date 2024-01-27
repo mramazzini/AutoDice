@@ -1,6 +1,6 @@
 "use server";
 
-import login from "@/app/actions/login";
+import login from "@/actions/login";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
