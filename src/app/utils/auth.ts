@@ -1,13 +1,18 @@
-import { sign, verify } from "jsonwebtoken";
-import { NextApiRequest, NextApiResponse } from "next";
+import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 const expiration = "1h";
-const secret = "PUT SECRET IN ENV FILE";
+const secret = new TextEncoder().encode("STORE SECRET IN ENV");
 
 export const generateToken = async (id: number) => {
-  "use server";
-  const token = sign({ id }, secret, { expiresIn: expiration });
+  const jwt = await new SignJWT();
+  const token = await jwt
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setSubject(id.toString())
+    .setExpirationTime(expiration)
+    .sign(secret);
+
   cookies().set("token", token, {
     maxAge: 60 * 60,
     httpOnly: true, // prevent client-side access
@@ -16,14 +21,17 @@ export const generateToken = async (id: number) => {
   return token;
 };
 export const verifyToken = async (req: NextRequest) => {
-  "use server";
   try {
-    const token = req.cookies.getAll();
-    console.log("token", token);
+    const token = cookies().get("token");
+
+    if (!token) return false;
+
+    const { payload } = await jwtVerify(token.value, secret);
+    if (!payload) return false;
 
     return true;
   } catch (error) {
     console.log(error);
-    return null;
+    return false;
   }
 };
