@@ -1,6 +1,9 @@
 "use client";
-import login from "@/actions/login";
-import { useState } from "react";
+
+import { useState, ChangeEvent, FormEvent } from "react";
+
+import login from "@/lib/actions/login.actions";
+
 export default function LoginForm() {
   const [formState, setFormState] = useState({
     email: "",
@@ -9,14 +12,14 @@ export default function LoginForm() {
 
   const [error, setError] = useState("");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormState({
       ...formState,
       [event.target.id]: event.target.value,
     });
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
     try {
@@ -35,15 +38,15 @@ export default function LoginForm() {
 
   return (
     <form
-      className="p-5 justify-center items-start flex flex-col w-1/3"
+      className="flex w-1/3 flex-col items-start justify-center p-5"
       onSubmit={handleSubmit}
     >
       <div className="pb-5">
-        <label className="text-3xl font-bold px-2" htmlFor="email">
+        <label className="px-2 text-3xl font-bold" htmlFor="email">
           Username:
         </label>
         <input
-          className="text-3xl font-bold px-2 bg-black/40 hover:bg-black/10 transition-all duration-300 ease-in-out cursor-pointer rounded-md justify-center items-center w-full h-16 mt-5"
+          className="mt-5 h-16 w-full cursor-pointer items-center justify-center rounded-md bg-black/40 px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-black/10"
           id="email"
           type="email"
           value={formState.email}
@@ -51,11 +54,11 @@ export default function LoginForm() {
         />
       </div>
       <div className="pb-5">
-        <label className="text-3xl font-bold px-2" htmlFor="password">
+        <label className="px-2 text-3xl font-bold" htmlFor="password">
           Password:
         </label>
         <input
-          className="text-3xl font-bold px-2 bg-black/40 hover:bg-black/10 transition-all duration-300 ease-in-out cursor-pointer rounded-md justify-center items-center w-full h-16 mt-5"
+          className="mt-5 h-16 w-full cursor-pointer items-center justify-center rounded-md bg-black/40 px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-black/10"
           id="password"
           type="password"
           value={formState.password}
@@ -63,7 +66,7 @@ export default function LoginForm() {
         />
       </div>
       <button
-        className="text-3xl font-bold px-12 bg-black/50 hover:bg-black/70 transition-all duration-300 ease-in-out cursor-pointer rounded-md justify-center items-center h-16 mt-5"
+        className="mt-5 h-16 cursor-pointer items-center justify-center rounded-md bg-black/50 px-12 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-black/70"
         type="submit"
       >
         Submit

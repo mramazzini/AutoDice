@@ -1,11 +1,11 @@
-import notfound from "../../../public/notfound.png";
+import notfound from '@/public/notfound.png';
 
-import DashboardLink from "@/components/DashboardLink";
+import DashboardLink from '@/components/DashboardLink';
 export default function Dashboard() {
   return (
-    <div className="w-full justify-center items-center flex flex-col my-5">
+    <div className="my-5 flex w-full flex-col items-center justify-center">
       <h1 className="text-4xl font-bold">Welcome back!</h1>
-      <div className="grid  grid-cols-4 gap-4 w-3/4 mt-10">
+      <div className="mt-10  grid w-3/4 grid-cols-4 gap-4">
         <DashboardLink
           title="Content Packs"
           description="Create content packs to add to your 5e campaigns, or purchase packs from other creators. These can be implemented into the AutoDice engine to add more content to your campaigns."
