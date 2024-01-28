@@ -18,7 +18,7 @@ export default function DashboardLink({
 }) {
   return (
     <Link
-      href="/packs"
+      href={link}
       className="group flex flex-col rounded-xl bg-white p-5 text-black transition-all duration-300 ease-in-out hover:shadow-xl"
     >
       <h1 className="text-3xl font-bold group-hover:text-blue-500 ">{title}</h1>
