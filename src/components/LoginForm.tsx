@@ -23,13 +23,7 @@ export default function LoginForm() {
     event.preventDefault();
     setError("");
     try {
-      fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formState),
-      }).then((res) => res.json());
+      await login(formState);
       document.location.href = `/dashboard`;
     } catch (err: any) {
       setError(err.message);

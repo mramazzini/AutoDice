@@ -20,11 +20,15 @@ export default function SignupForm() {
     });
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    signup(formState);
-    document.location.href = `/dashboard`;
+    try {
+      await signup(formState);
+      document.location.href = `/dashboard`;
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (
