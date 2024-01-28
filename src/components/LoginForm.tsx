@@ -20,8 +20,14 @@ export default function LoginForm() {
     event.preventDefault();
     setError("");
     try {
-      const res = await login(formState);
-      console.log(res);
+      fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      }).then((res) => res.json());
+      document.location.href = `/dashboard`;
     } catch (err: any) {
       setError(err.message);
     }

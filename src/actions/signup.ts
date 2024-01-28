@@ -1,5 +1,5 @@
 "use server";
-import { PrismaClient } from "@prisma/client";
+import db from "./db";
 import bcrypt from "bcrypt";
 export default async function signup(formdata: {
   email: string;
@@ -7,9 +7,8 @@ export default async function signup(formdata: {
   username: string;
 }) {
   const { email, password, username } = formdata;
-  const prisma = new PrismaClient();
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: {
       email,
     },
@@ -25,7 +24,7 @@ export default async function signup(formdata: {
 
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  const newUser = await prisma.user.create({
+  const newUser = await db.user.create({
     data: {
       email,
       password: hashedPassword,

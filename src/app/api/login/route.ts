@@ -1,14 +1,16 @@
 "use server";
 
 import login from "@/actions/login";
-
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const email = searchParams.get("email") || "";
-  const password = searchParams.get("password") || "";
+import { generateToken } from "@/app/utils/auth";
+export async function POST(req: Request) {
   try {
-    const res = await login({ email, password });
-    return Response.json(res);
+    const { email, password } = await req.json();
+    const userData = await login({ email, password });
+    const token = await generateToken(userData.id);
+
+    return Response.json({
+      token,
+    });
   } catch (err: any) {
     return Response.json({ error: err.message });
   }

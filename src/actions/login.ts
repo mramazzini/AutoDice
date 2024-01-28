@@ -1,14 +1,13 @@
 "use server";
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+import db from "./db";
 export default async function login(formdata: {
   email: string;
   password: string;
 }) {
   const { email, password } = formdata;
-  const prisma = new PrismaClient();
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: {
       email,
     },

@@ -8,7 +8,7 @@ export default async function middleware(req: NextRequest) {
   const isAuthenticated = await verifyToken(req);
 
   if (!isAuthenticated && protectedRoutes.includes(req.nextUrl.pathname)) {
-    const absoluteURL = new URL("/", req.nextUrl.origin);
+    const absoluteURL = new URL("/login", req.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
 }

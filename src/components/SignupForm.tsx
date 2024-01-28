@@ -22,7 +22,7 @@ export default function SignupForm() {
     event.preventDefault();
     setError("");
     try {
-      const token = await fetch("/api/signup", {
+      await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
