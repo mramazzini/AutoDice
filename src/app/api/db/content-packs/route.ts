@@ -12,6 +12,17 @@ export async function GET(req: Request) {
     where: {
       userId,
     },
+    include: {
+      monsters: true,
+      spells: true,
+      classes: true,
+      subClasses: true,
+      backgrounds: true,
+      races: true,
+      feat: true,
+      equipment: true,
+      maps: true,
+    },
   });
   return Response.json(data);
 }

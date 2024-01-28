@@ -2,8 +2,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ContentPack } from "@prisma/client";
+interface ContentPacksProps extends ContentPack {
+  monsters: Array<any>;
+  races: Array<any>;
+  classes: Array<any>;
+  backgrounds: Array<any>;
+  spells: Array<any>;
+  maps: Array<any>;
+  npcs: Array<any>;
+}
+
 export default function ContentPacks() {
-  const [contentPacks, setContentPacks] = useState<ContentPack[]>([]);
+  const [contentPacks, setContentPacks] = useState<ContentPacksProps[]>([]);
   useEffect(() => {
     fetch("/api/db/content-packs", {
       method: "GET",
@@ -16,7 +26,7 @@ export default function ContentPacks() {
         console.log(data);
         setContentPacks(data);
       });
-  });
+  }, []);
 
   return (
     <div className="w-full min-h-screen justify-start items-center flex flex-col">
@@ -54,7 +64,7 @@ export default function ContentPacks() {
             <div className="division w-full bg-gray-300 h-1"></div>
           </div>
           <div className="w-full flex flex-col ">
-            {contentPacks.map((pack, index) => (
+            {contentPacks.map((pack: ContentPacksProps, index: number) => (
               <div
                 className="w-full bg-white rounded-lg p-5 text-black my-5 mx-2 flex-row flex"
                 key={index}
@@ -66,13 +76,14 @@ export default function ContentPacks() {
                 <div className="w-1/3 flex flex-col">
                   <h1 className="text-2xl font-bold">Content</h1>
                   <p className="text-xl">
-                    Monsters: {pack.monsters} | Items: {pack.items} | Classes:{" "}
-                    {pack.classes} | Backgrounds: {pack.backgrounds} | Spells:{" "}
-                    {pack.spells} | Maps: {pack.maps} | NPCs: {pack.npcs}
+                    Monsters: {pack.monsters.length} | Classes:{" "}
+                    {pack.classes.length} | Backgrounds:{" "}
+                    {pack.backgrounds.length} | Spells: {pack.spells.length} |
+                    Maps: {pack.maps.length} | Races: {pack.races.length}
                   </p>
                 </div>
                 <Link
-                  href={`/content-packs:${0}`}
+                  href={`/content-packs:${pack.id}`}
                   className="bg-blue-500 p-3  rounded-lg my-3 ml-auto"
                 >
                   View
