@@ -24,6 +24,7 @@ export default function SignupForm() {
     event.preventDefault();
     setError("");
     signup(formState);
+    document.location.href = `/dashboard`;
   };
 
   return (
