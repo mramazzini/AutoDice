@@ -1,4 +1,4 @@
-import { seed } from "@/actions/db/seed";
+import { seed } from "@/lib/actions/db/seed.actions";
 
 export async function POST(req: Request) {
   try {
