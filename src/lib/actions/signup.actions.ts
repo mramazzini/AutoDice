@@ -1,6 +1,8 @@
-"use server";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+'use server';
+
+import bcrypt from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
+
 export default async function signup(formdata: {
   email: string;
   password: string;
@@ -16,11 +18,11 @@ export default async function signup(formdata: {
   });
 
   if (user) {
-    throw new Error("User with this email already exists");
+    throw new Error('User with this email already exists');
   }
 
   if (password.length < 6) {
-    throw new Error("Password must be at least 8 characters");
+    throw new Error('Password must be at least 8 characters');
   }
 
   const saltRounds = 10;
