@@ -4,8 +4,8 @@ import { verifyToken } from "./app/utils/auth";
 
 const protectedRoutes = ["/dashboard"];
 
-export default async function middleware(req: NextRequest) {
-  const isAuthenticated = await verifyToken(req);
+export async function middleware(req: NextRequest) {
+  const isAuthenticated = await verifyToken();
 
   if (!isAuthenticated && protectedRoutes.includes(req.nextUrl.pathname)) {
     const absoluteURL = new URL("/login", req.nextUrl.origin);

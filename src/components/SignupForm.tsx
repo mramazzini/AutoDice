@@ -1,5 +1,4 @@
 "use client";
-import signup from "@/actions/signup";
 
 import { useState } from "react";
 export default function SignupForm() {

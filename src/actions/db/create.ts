@@ -37,6 +37,7 @@ export const createRace = async (data: Race) => {
 export const createContentPack = async (data: {
   name: string;
   description: string;
+  default: boolean;
 }) => {
   "use server";
   console.log("Creating content pack:", data.name);

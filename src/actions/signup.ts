@@ -1,6 +1,7 @@
 "use server";
 import db from "./db";
 import bcrypt from "bcrypt";
+import { addDefaultContentPacksToUser } from "./db/connect";
 export default async function signup(formdata: {
   email: string;
   password: string;
@@ -31,6 +32,6 @@ export default async function signup(formdata: {
       name: username,
     },
   });
-
+  await addDefaultContentPacksToUser(newUser.id);
   return newUser;
 }

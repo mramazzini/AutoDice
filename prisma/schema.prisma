@@ -314,6 +314,7 @@ model ContentPack {
   id          Int          @id @default(autoincrement())
   name        String
   description String
+  default     Boolean      @default(false) //If true, signup  will automatically add this content pack to the user
   monsters    Monster[]
   spells      Spell[]
   classes     Class[]

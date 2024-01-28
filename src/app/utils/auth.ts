@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { NextRequest } from "next/server";
+
 const expiration = "1h";
 const secret = new TextEncoder().encode("STORE SECRET IN ENV");
 
@@ -20,7 +20,8 @@ export const generateToken = async (id: number) => {
 
   return token;
 };
-export const verifyToken = async (req: NextRequest) => {
+
+export const verifyToken = async () => {
   try {
     const token = cookies().get("token");
 
@@ -33,5 +34,23 @@ export const verifyToken = async (req: NextRequest) => {
   } catch (error) {
     console.log(error);
     return false;
+  }
+};
+
+export const getUserId = async () => {
+  try {
+    const token = cookies().get("token");
+
+    if (!token) return -1;
+
+    const { payload } = await jwtVerify(token.value, secret);
+    if (!payload) return -1;
+    if (payload.sub) {
+      return parseInt(payload.sub);
+    }
+    return -1;
+  } catch (error) {
+    console.log(error);
+    return -1;
   }
 };

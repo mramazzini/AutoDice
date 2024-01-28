@@ -65,5 +65,6 @@ export const clearDB = async () => {
   await db.class.deleteMany({});
   await db.background.deleteMany({});
   await db.race.deleteMany({});
+  await db.user.deleteMany({});
   await db.contentPack.deleteMany({});
 };

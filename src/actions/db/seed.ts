@@ -28,6 +28,7 @@ export const seed = async () => {
   const pack = await createContentPack({
     name: "SRD ContentPack",
     description: "Free DND 5e content from the SRD",
+    default: true,
   });
   const packId = pack.id;
 

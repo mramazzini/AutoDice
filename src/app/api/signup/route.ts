@@ -1,4 +1,5 @@
 import signup from "@/actions/signup";
+
 import { generateToken } from "@/app/utils/auth";
 
 import { NextRequest, NextResponse } from "next/server";

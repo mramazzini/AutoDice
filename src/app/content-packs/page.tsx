@@ -1,55 +1,23 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-
-const contentPacks = [
-  {
-    name: "D&D 5e",
-    description: "The official D&D 5e content pack.",
-    monsters: 10,
-    items: 20,
-    classes: 5,
-    backgrounds: 5,
-    spells: 30,
-    maps: 3,
-    npcs: 5,
-  },
-  {
-    name: "D&D 5e",
-    description: "The official D&D 5e content pack.",
-    monsters: 10,
-    items: 20,
-    classes: 5,
-    backgrounds: 5,
-    spells: 30,
-    maps: 3,
-    npcs: 5,
-  },
-  {
-    name: "D&D 5e",
-    description: "The official D&D 5e content pack.",
-    monsters: 10,
-    items: 20,
-    classes: 5,
-    backgrounds: 5,
-    spells: 30,
-    maps: 3,
-    npcs: 5,
-  },
-  {
-    name: "D&D 5e",
-    description: "The official D&D 5e content pack.",
-    monsters: 10,
-    items: 20,
-    classes: 5,
-    backgrounds: 5,
-    spells: 30,
-    maps: 3,
-    npcs: 5,
-  },
-];
-
+import { useEffect, useState } from "react";
+import { ContentPack } from "@prisma/client";
 export default function ContentPacks() {
+  const [contentPacks, setContentPacks] = useState<ContentPack[]>([]);
+  useEffect(() => {
+    fetch("/api/db/content-packs", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setContentPacks(data);
+      });
+  });
+
   return (
     <div className="w-full min-h-screen justify-start items-center flex flex-col">
       <div className="w-3/4  mt-10 ">
@@ -87,7 +55,10 @@ export default function ContentPacks() {
           </div>
           <div className="w-full flex flex-col ">
             {contentPacks.map((pack, index) => (
-              <div className="w-full bg-white rounded-lg p-5 text-black my-5 mx-2 flex-row flex">
+              <div
+                className="w-full bg-white rounded-lg p-5 text-black my-5 mx-2 flex-row flex"
+                key={index}
+              >
                 <div className="w-1/3">
                   <h1 className="text-2xl font-bold">{pack.name}</h1>
                   <p className="text-xl">{pack.description}</p>

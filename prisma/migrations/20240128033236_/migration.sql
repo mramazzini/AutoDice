@@ -244,6 +244,8 @@ CREATE TABLE "Tools" (
 CREATE TABLE "ContentPack" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "default" BOOLEAN NOT NULL,
     "userId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
