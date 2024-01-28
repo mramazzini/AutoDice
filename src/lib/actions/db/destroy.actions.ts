@@ -1,5 +1,5 @@
-import db from ".";
-
+import { PrismaClient } from "@prisma/client";
+const db = new PrismaClient();
 export const destroyClass = async (id: number) => {
   const classData = await db.class.findUnique({
     where: {

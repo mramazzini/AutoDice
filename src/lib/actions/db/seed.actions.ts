@@ -3,9 +3,9 @@ import {
   createBackground,
   createClass,
   createContentPack,
-} from "@/actions/db/create";
+} from "@/lib/actions/db/create.actions";
 import chalk from "chalk";
-import { clearDB } from "./destroy";
+import { clearDB } from "./destroy.actions";
 import data from "@/seeds";
 import { text } from "stream/consumers";
 

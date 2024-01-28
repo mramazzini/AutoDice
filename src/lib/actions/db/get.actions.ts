@@ -1,5 +1,6 @@
-import db from ".";
+import { PrismaClient } from "@prisma/client";
 import { getUserId } from "@/app/utils/auth";
+const db = new PrismaClient();
 export const contentPacks = () => {
   const data = db.contentPack.findMany();
   return data;

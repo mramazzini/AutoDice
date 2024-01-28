@@ -2,7 +2,7 @@
 
 import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
-import { addDefaultContentPacksToUser } from "@/actions/db/connect";
+import { addDefaultContentPacksToUser } from "@/lib/actions/db/connect.actions";
 import { generateToken } from "@/app/utils/auth";
 
 export default async function signup(formdata: {

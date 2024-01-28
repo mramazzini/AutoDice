@@ -1,5 +1,5 @@
-import { Class, Background, Race } from "@prisma/client";
-import db from ".";
+import { Class, Background, Race, PrismaClient } from "@prisma/client";
+const db = new PrismaClient();
 
 export const createClass = async (data: Class) => {
   "use server";

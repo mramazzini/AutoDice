@@ -1,5 +1,5 @@
-import db from ".";
-
+import { PrismaClient } from "@prisma/client";
+const db = new PrismaClient();
 export const addContentPackToUser = async (
   userId: number,
   contentPackId: number
