@@ -1,31 +1,26 @@
-"use client";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ContentPack } from "@prisma/client";
+'use client';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { ContentPack } from '@prisma/client';
+import { userContentPacks } from '@/lib/actions/db/get.actions';
 interface ContentPacksProps extends ContentPack {
-  monsters: Array<any>;
   races: Array<any>;
   classes: Array<any>;
   backgrounds: Array<any>;
   spells: Array<any>;
   maps: Array<any>;
-  npcs: Array<any>;
+  monsters: Array<any>;
 }
 
 export default function ContentPacks() {
   const [contentPacks, setContentPacks] = useState<ContentPacksProps[]>([]);
   useEffect(() => {
-    fetch("/api/db/content-packs", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setContentPacks(data);
-      });
+    userContentPacks().then((res) => {
+      if (res) {
+        setContentPacks(res as ContentPacksProps[]);
+        console.log(res);
+      }
+    });
   }, []);
 
   return (
@@ -76,8 +71,8 @@ export default function ContentPacks() {
                 <div className="w-1/3 flex flex-col">
                   <h1 className="text-2xl font-bold">Content</h1>
                   <p className="text-xl">
-                    Monsters: {pack.monsters.length} | Classes:{" "}
-                    {pack.classes.length} | Backgrounds:{" "}
+                    Monsters: {pack.monsters.length} | Classes:{' '}
+                    {pack.classes.length} | Backgrounds:{' '}
                     {pack.backgrounds.length} | Spells: {pack.spells.length} |
                     Maps: {pack.maps.length} | Races: {pack.races.length}
                   </p>
