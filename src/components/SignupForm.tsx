@@ -35,6 +35,8 @@ export default function SignupForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
+      email: '',
+      password: '',
     },
   });
   const [error, setError] = useState('');
@@ -44,7 +46,7 @@ export default function SignupForm() {
     console.log(values);
     try {
       await signup(values);
-      // document.location.href = `/dashboard`;
+      document.location.href = `/dashboard`;
     } catch (err: any) {
       setError(err.message);
     }
@@ -60,7 +62,7 @@ export default function SignupForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
@@ -76,7 +78,7 @@ export default function SignupForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder=" [email protected]" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -96,6 +98,7 @@ export default function SignupForm() {
           )}
         />
         <Button type="submit">Submit</Button>
+        {error && <p className="text-red-500">{error}</p>}
       </form>
     </Form>
   );
