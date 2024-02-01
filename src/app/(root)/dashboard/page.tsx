@@ -1,5 +1,5 @@
 import notfound from '@/public/notfound.png';
-
+import { Input } from '@/components/ui/input';
 import DashboardLink from '@/components/DashboardLink';
 export default function Dashboard() {
   return (
@@ -12,7 +12,7 @@ export default function Dashboard() {
           src={notfound}
           alt="Content Packs"
           action="Take me there!"
-          link={"/content-packs"}
+          link={'/content-packs'}
         />
         <DashboardLink
           title="Character Creator"
@@ -20,7 +20,7 @@ export default function Dashboard() {
           src={notfound}
           alt="Character Creator"
           action="Lets get started!"
-          link={"/character-creator"}
+          link={'/character-creator'}
         />
         <DashboardLink
           title="DM Tools"
