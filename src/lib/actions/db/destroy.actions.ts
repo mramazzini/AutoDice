@@ -1,5 +1,5 @@
-import db from ".";
-
+import { PrismaClient } from '@prisma/client';
+const db = new PrismaClient();
 export const destroyClass = async (id: number) => {
   const classData = await db.class.findUnique({
     where: {
@@ -8,7 +8,7 @@ export const destroyClass = async (id: number) => {
   });
 
   if (!classData) {
-    throw new Error("Class not found");
+    throw new Error('Class not found');
   }
 
   const deletedClass = await db.class.delete({
@@ -28,7 +28,7 @@ export const destroyBackground = async (id: number) => {
   });
 
   if (!backgroundData) {
-    throw new Error("Background not found");
+    throw new Error('Background not found');
   }
 
   const deletedBackground = await db.background.delete({
@@ -48,7 +48,7 @@ export const destroyRace = async (id: number) => {
   });
 
   if (!raceData) {
-    throw new Error("Race not found");
+    throw new Error('Race not found');
   }
 
   const deletedRace = await db.race.delete({
@@ -62,6 +62,7 @@ export const destroyRace = async (id: number) => {
 
 //Probably should not be used in production
 export const clearDB = async () => {
+  await db.features.deleteMany({});
   await db.class.deleteMany({});
   await db.background.deleteMany({});
   await db.race.deleteMany({});

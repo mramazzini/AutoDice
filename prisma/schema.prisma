@@ -183,6 +183,8 @@ model Features {
   // Abilities that classes gain as they reach certain levels
   id            Int          @id @default(autoincrement())
   name          String
+  description   String
+  level         Int
   classId       Int
   class         Class?       @relation(fields: [classId], references: [id])
   SubClass      SubClass?    @relation(fields: [subClassId], references: [id])
