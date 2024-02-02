@@ -64,9 +64,7 @@ export default function SignupForm() {
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
