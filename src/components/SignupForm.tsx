@@ -1,30 +1,51 @@
-"use client";
+'use client';
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import signup from '@/lib/actions/signup.actions';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { z } from 'zod';
 
-import signup from "@/lib/actions/signup.actions";
+const formSchema = z.object({
+  username: z
+    .string()
+    .min(2, {
+      message: 'Username must be at least 2 characters long',
+    })
+    .max(50, {
+      message: 'Username must be less than 50 characters long',
+    }),
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
 export default function SignupForm() {
-  const [formState, setFormState] = useState({
-    username: "",
-    password: "",
-    email: "",
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+    },
   });
+  const [error, setError] = useState('');
 
-  const [error, setError] = useState("");
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFormState({
-      ...formState,
-      [event.target.id]: event.target.value,
-    });
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError("");
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    setError('');
+    console.log(values);
     try {
-      await signup(formState);
+      await signup(values);
       document.location.href = `/dashboard`;
     } catch (err: any) {
       setError(err.message);
@@ -32,53 +53,51 @@ export default function SignupForm() {
   };
 
   return (
-    <form
-      className="flex w-1/3 flex-col items-start justify-center p-5"
-      onSubmit={handleSubmit}
-    >
-      <div className="pb-5">
-        <label className="px-2 text-3xl font-bold" htmlFor="username">
-          Username
-        </label>
-        <input
-          className="mt-5 h-16 w-full cursor-pointer items-center justify-center rounded-md bg-black/40 px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-black/10"
-          id="username"
-          type="text"
-          value={formState.username}
-          onChange={handleChange}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="pb-5">
-        <label className="px-2 text-3xl font-bold" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="mt-5 h-16 w-full cursor-pointer items-center justify-center rounded-md bg-black/40 px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-black/10"
-          id="email"
-          type="email"
-          value={formState.email}
-          onChange={handleChange}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="pb-5">
-        <label className="px-2 text-3xl font-bold" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="mt-5 h-16 w-full cursor-pointer items-center justify-center rounded-md bg-black/40 px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-black/10"
-          id="password"
-          type="password"
-          value={formState.password}
-          onChange={handleChange}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <button
-        className="mt-5 h-16 cursor-pointer items-center justify-center rounded-md bg-black/50 px-12 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-black/70"
-        type="submit"
-      >
-        Submit
-      </button>
-      {error && <p>{error}</p>}
-    </form>
+        <Button type="submit">Submit</Button>
+        {error && <p className="text-red-500">{error}</p>}
+      </form>
+    </Form>
   );
 }

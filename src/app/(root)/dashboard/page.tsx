@@ -1,5 +1,5 @@
 import notfound from '@/public/notfound.png';
-import { Input } from '@/components/ui/input';
+
 import DashboardLink from '@/components/DashboardLink';
 export default function Dashboard() {
   return (
